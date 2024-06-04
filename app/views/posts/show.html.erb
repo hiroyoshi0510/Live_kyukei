@@ -1,0 +1,97 @@
+<h3>投稿詳細</h3>
+<div class="post">
+    ライブ会場名
+    <p><%= @post.live %></p>
+    休憩場所名
+    <p><%= @post.name %></p>
+    休憩場所
+    <p><%= @post.adress %></p>
+    会場からの時間
+    <p><%= @post.times %></p>
+    料金目安
+    <p><%= @post.fees %></p>
+    休憩可能目安時間
+    <p><%= @post.staytime %></p>
+    屋根
+    <p><%= @post.roof %></p>
+    コメント
+    <p><%= @post.comment2 %></p>
+    <p><%= @post.created_at %></p>
+
+
+    <% if user_signed_in? %>
+        <% if current_user.already_liked?(@post) %>
+            <%= button_to post_like_path(@post), method: :delete do %>
+                <i class="fas fa-heart"></i><%= @post.likes.count %>
+            <% end %>
+        <% else %>
+            <%= button_to post_likes_path(@post), method: :post do %>
+                <i class="fas fa-heart"></i><%= @post.likes.count %>
+            <% end %>
+        <% end %>
+    <% else %>
+        <i class="far fa-heart"></i><%= @post.likes.count %>
+    <% end %>
+</div>
+
+<div id='map'></div>
+
+<style>
+#map {
+    height: 600px;
+    width: 100%;
+}
+</style>
+
+<!-- js部分 -->
+<script>
+//初期マップの設定
+let map
+let marker
+function initMap(){
+    geocoder = new google.maps.Geocoder()
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        center:  {lat: <%= @post.lat %>, lng: <%= @post.lng %>},
+        zoom: 15,
+    });
+
+    marker = new google.maps.Marker({
+    position:  {lat: <%= @post.lat %>, lng: <%= @post.lng %>},
+    map: map
+    });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1p1vOg2wCDiHugUcLvTkjxj_HbBAitLo&callback=initMap" async defer></script>
+
+
+
+
+<h2>いいねしたユーザー</h2>
+<% @post.liked_users.each do |user| %>
+    <li><%= user.email %></li>
+<% end %>
+
+<%= link_to "編集する", edit_post_path(@post.id) %>
+
+
+<div class="comment-wrapper">
+    <p>コメント一覧</p>
+    <% @comments.each do |c| %>
+        <div>
+            <%= c.user.email unless c.user.blank? %>
+            <br>
+            <%= c.content %>
+        </div>
+            <br>
+    <% end %>
+
+    <% if user_signed_in? %>
+        <%= form_with(model: [@post, @comment], local: true) do |f| %>
+            <%= f.text_area :content %>
+            <%= button_tag type: "submit" do %>
+                <i class="far fa-comments"></i> コメントする
+            <% end %>
+        <% end %>
+    <% end %>
+</div>

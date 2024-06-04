@@ -1,0 +1,91 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/* ベーススタイル */
+
+/* ベーススタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    padding-top: 60px; /* ヘッダーの高さ分だけ上部にパディングを追加 */
+}
+
+  /* ヘッダースタイル */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed; /* ヘッダーを固定 */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* 他の要素よりも前面に表示 */
+    display: flex;
+    justify-content: space-between; /* 子要素を左右に配置 */
+    align-items: center; /* 子要素を垂直方向に中央揃え */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+  /* ヘッダーリストスタイル */
+.header-list {
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    align-items: center;
+}
+
+.header-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.header-list ul li {
+    margin-left: 20px;
+}
+
+.header-list ul li:first-child {
+    margin-left: 0;
+}
+
+  /* リンクスタイル */
+.header-list ul li a, .header-list ul li button {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.header-list ul li a:hover, .header-list ul li button:hover {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+  /* メインコンテンツスタイル */
+main {
+    padding: 20px;
+}

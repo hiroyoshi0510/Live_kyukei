@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>map_app</title>
+    <%= stylesheet_link_tag 'posts', media: 'all' %>
+</head>
+<body>
+    <div class="search-form">
+        <h3>投稿を検索</h3>
+        <%= form_tag({controller: "posts", action: "index"}, method: :get) do %>
+            <%= text_field_tag :search, params[:search], placeholder: "ライブ会場を検索" %>
+            <%= select_tag :searchfee, options_for_select([["", ""], ["無料", "無料"], ["~1000円", "~1000円"], ["1000円~", "1000円~"]], params[:searchfee])  %>
+            <%= select_tag :searchroof, options_for_select([["", ""], ["あり", "あり"], ["なし", "なし"]], params[:searchroof]) %>
+            <%= select_tag :searchstaytime, options_for_select([["", ""], ["~30分", "~30分"], ["~1時間", "~1時間"], ["1時間~", "1時間~"]], params[:searchstaytime]) %>
+            <%= submit_tag 'ライブ会場を検索する' %>
+        <% end %>
+    </div>
+
+<%= page_entries_info @posts %>
+<%= paginate @posts %>
+
+    <div class="posts-container">
+        <% @posts.each do |t| %>
+            <div class="post">
+                <%= image_tag t.image_url, size: "250x200" if t.image? %>
+                <div><strong>ライブ会場:</strong> <%= t.live %></div>
+                <div><strong>名前:</strong> <%= t.name %></div>
+                <div><strong>住所:</strong> <%= t.adress %></div>
+                <div><strong>料金:</strong> <%= t.fees %></div>
+                <div><strong>滞在時間:</strong> <%= t.staytime %></div>
+                <div><strong>屋根:</strong> <%= t.roof %></div>
+                <div><strong>時間:</strong> <%= t.times %></div>
+                <div><strong>ユーザー:</strong> <%= link_to t.user.name, user_path(t.user.id) %> (<%= t.user.email %>)</div>
+                <div><strong>コメント:</strong> <%= t.comment2 %></div>
+                <div><strong>緯度:</strong> <%= t.lat %>, <strong>経度:</strong> <%= t.lng %></div>
+
+                <div class="actions">
+                    <% if user_signed_in? %>
+                        <% if current_user.already_liked?(t) %>
+                            <%= button_to post_like_path(id: t.id, post_id: t.id), method: :delete, class: "like-button" do %>
+                                <i class="fas fa-heart"></i><%= t.likes.count %>
+                            <% end %>
+                        <% else %>
+                            <%= button_to post_likes_path(id: t.id, post_id: t.id), method: :post, class: "like-button" do %>
+                                <i class="fas fa-heart"></i><%= t.likes.count %>
+                            <% end %>
+                        <% end %>
+                    <% else %>
+                        <i class="far fa-heart"></i><%= t.likes.count %>
+                    <% end %>
+                    <%= link_to "詳細へ", post_path(t.id), class: "detail-button" %>
+                    <%= link_to "編集する", edit_post_path(t.id), class: "edit-button" %>
+                    <%= button_to "削除する", post_path(t.id), method: :delete, class: "delete-button" %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</body>
+</html>
+
+<%= page_entries_info @posts %>
+<%= paginate @posts %>

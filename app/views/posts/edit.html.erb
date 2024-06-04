@@ -1,0 +1,24 @@
+<%= form_for @post do |f| %>
+    <%= f.label :live %>
+    <%= f.text_field :live, :size => 140 %> 
+
+    <%= f.label :name %>
+    <%= f.text_field :name, :size => 140 %> 
+
+    <%= f.label :adress %>
+    <%= f.text_field :adress, :size => 140 %> 
+
+    <%= f.label :time %>
+    <%= f.text_field :time, :size => 140 %> 
+
+    <%= f.label :fee %>
+    <%= f.text_field :fee, :size => 140 %> 
+
+    <%= f.label :staytime %>
+    <%= f.text_field :staytime, :size => 140 %> 
+
+    <%= f.label :roof %>
+    <%= f.text_field :roof, :size => 140 %> 
+
+    <%= f.submit "編集する" %>
+<% end %>
