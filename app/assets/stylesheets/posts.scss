@@ -52,6 +52,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
+    width: auto; /* Make sure buttons have auto width */
 }
 .post .actions a {
     background-color: #c0cddc;

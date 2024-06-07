@@ -25,12 +25,11 @@ body {
     padding-top: 60px; /* ヘッダーの高さ分だけ上部にパディングを追加 */
 }
 
-  /* ヘッダースタイル */
+/* ヘッダースタイル */
 header {
     background-color: #333;
     color: #fff;
     padding: 10px 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: fixed; /* ヘッダーを固定 */
     top: 0;
     left: 0;
@@ -46,7 +45,7 @@ header h1 {
     font-size: 36px;
 }
 
-  /* ヘッダーリストスタイル */
+/* ヘッダーリストスタイル */
 .header-list {
     display: flex;
     justify-content: flex-end; /* 右寄せ */
@@ -69,7 +68,7 @@ header h1 {
     margin-left: 0;
 }
 
-  /* リンクスタイル */
+/* リンクスタイル */
 .header-list ul li a, .header-list ul li button {
     color: #fff;
     text-decoration: none;
@@ -80,10 +79,26 @@ header h1 {
     cursor: pointer;
 }
 
-.header-list ul li a:hover, .header-list ul li button:hover {
-    background-color: #444;
-    border-radius: 5px;
+/* ボタンのスタイルをリセットし、他のボタンと同様のスタイルを適用 */
+.header-list ul li form {
+    background-color: transparent;
+    border: none;
+    background: none;
+    margin: 0; /* マージンをリセット */
+    padding: 0; /* パディングをリセット */
 }
+
+/* ログアウトボタンのスタイルを上書き */
+.header-list ul li form button[type="submit"] {
+    color: #fff;
+    font-size: 20px;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+
 
   /* メインコンテンツスタイル */
 main {
