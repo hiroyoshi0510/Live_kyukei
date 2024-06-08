@@ -16,5 +16,10 @@
     "@babel/preset-env": "^7.24.7",
     "babel-loader": "^8.3.0",
     "webpack-dev-server": "3"
+  },
+  "engines": {
+    "node": "16.20.0",
+    "npm": "8.19.4"
   }
+
 }
