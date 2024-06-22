@@ -66,7 +66,10 @@ class PostsController < ApplicationController
     def destroy
         post = Post.find(params[:id])
         post.destroy
-        redirect_to action: :index
+        respond_to do |format|
+            format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+            format.json { head :no_content }
+        end
     end
 
     before_action :authenticate_user!, only: [:new, :create, :update, :destroy]

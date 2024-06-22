@@ -1,47 +1,87 @@
-<h3>投稿詳細</h3>
-<div class="post">
-    ライブ会場名
-    <p><%= @post.live %></p>
-    休憩場所名
-    <p><%= @post.name %></p>
-    休憩場所
-    <p><%= @post.adress %></p>
-    会場からの時間
-    <p><%= @post.times %></p>
-    料金目安
-    <p><%= @post.fees %></p>
-    休憩可能目安時間
-    <p><%= @post.staytime %></p>
-    屋根
-    <p><%= @post.roof %></p>
-    コメント
-    <p><%= @post.comment2 %></p>
-    <p><%= @post.created_at %></p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Page</title>
+    <%= stylesheet_link_tag 'post_show', media: 'all' %>
+</head>
 
+<body>
+<h1>map_app</h1>
+<h1>投稿詳細</h1>
+
+<div class="content-container">
+    <div class="post1">
+        <div class="post1-image">
+            <% if @post.image? %>
+                <%= image_tag @post.image_url, size: "250x200" %>
+            <% end %>
+        </div>
+        <div class="post1-content">
+            <strong>ライブ会場名</strong>
+            <p><%= @post.live %></p>
+            <strong>休憩場所名</strong>
+            <p><%= @post.name %></p>
+            <strong>休憩場所</strong>
+            <p><%= @post.adress %></p>
+            <strong>会場からの時間</strong>
+            <p><%= @post.times %></p>
+            <strong>料金目安</strong>
+            <p><%= @post.fees %></p>
+            <strong>休憩可能目安時間</strong>
+            <p><%= @post.staytime %></p>
+            <strong>屋根</strong>
+            <p><%= @post.roof %></p>
+            <p><%= @post.created_at %>
+
+            <% if user_signed_in? %>
+                <% if current_user.already_liked?(@post) %>
+                    <%= link_to post_like_path(@post), method: :delete do %>
+                        <i class="fas fa-heart"></i><%= @post.likes.count %>
+                    <% end %>
+                <% else %>
+                    <%= link_to post_likes_path(@post), method: :post do %>
+                        <i class="fas fa-heart"></i><%= @post.likes.count %>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <i class="far fa-heart"></i><%= @post.likes.count %>
+            <% end %></p>
+        </div>
+    </div>
+
+
+    <div id='map'></div>
+</div>
+
+<h2>いいねしたユーザー</h2>
+<% @post.liked_users.each do |user| %>
+    <li><%= user.email %></li>
+<% end %>
+
+
+<div class="comment-wrapper">
+    <h3>コメント一覧</h3>
+    <% @comments.each do |c| %>
+        <div>
+            <%= c.user.email unless c.user.blank? %>
+            <br>
+            <%= c.content %>
+        </div>
+        <br>
+    <% end %>
 
     <% if user_signed_in? %>
-        <% if current_user.already_liked?(@post) %>
-            <%= button_to post_like_path(@post), method: :delete do %>
-                <i class="fas fa-heart"></i><%= @post.likes.count %>
-            <% end %>
-        <% else %>
-            <%= button_to post_likes_path(@post), method: :post do %>
-                <i class="fas fa-heart"></i><%= @post.likes.count %>
+        <%= form_with(model: [@post, @comment], local: true) do |f| %>
+            <%= f.text_area :content %>
+            <%= button_tag type: "submit" do %>
+                <i class="far fa-comments"></i> コメントする
             <% end %>
         <% end %>
-    <% else %>
-        <i class="far fa-heart"></i><%= @post.likes.count %>
     <% end %>
 </div>
 
-<div id='map'></div>
 
-<style>
-#map {
-    height: 600px;
-    width: 100%;
-}
-</style>
 
 <!-- js部分 -->
 <script>
@@ -63,35 +103,5 @@ function initMap(){
 }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1p1vOg2wCDiHugUcLvTkjxj_HbBAitLo&callback=initMap" async defer></script>
-
-
-
-
-<h2>いいねしたユーザー</h2>
-<% @post.liked_users.each do |user| %>
-    <li><%= user.email %></li>
-<% end %>
-
-<%= link_to "編集する", edit_post_path(@post.id) %>
-
-
-<div class="comment-wrapper">
-    <p>コメント一覧</p>
-    <% @comments.each do |c| %>
-        <div>
-            <%= c.user.email unless c.user.blank? %>
-            <br>
-            <%= c.content %>
-        </div>
-            <br>
-    <% end %>
-
-    <% if user_signed_in? %>
-        <%= form_with(model: [@post, @comment], local: true) do |f| %>
-            <%= f.text_area :content %>
-            <%= button_tag type: "submit" do %>
-                <i class="far fa-comments"></i> コメントする
-            <% end %>
-        <% end %>
-    <% end %>
-</div>
+</body>
+</html>

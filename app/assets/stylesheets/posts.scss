@@ -5,60 +5,109 @@
 body {
     font-family: Arial, sans-serif;
 }
-.header, .search-form, .posts-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 10px;
+
+
+/* ページ全体のコンテナをフレックスボックスで設定 */
+.page-container {
+    display: flex;               /* 横方向にフレックスボックスレイアウトを使用 */
+    align-items: flex-start;     /* 上揃えにする */
+    gap: 20px;                   /* 子要素間のスペースを20pxに設定 */
+    max-width: 1200px;           /* 最大幅を1200pxに設定 */
+    margin: 0 auto;              /* 水平方向に中央揃え */
+    padding: 20px;               /* 内側に20pxの余白を設定 */
 }
-.header h1, .header h3 {
-    text-align: center;
-}
+
+/* 検索フォームのスタイル */
 .search-form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;   /* 背景色を薄いグレーに設定 */
+    padding: 10px ;               /* 内側に10pxの余白を設定 */
+    border-radius: 8px;          /* 角を8pxの半径で丸める */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* シャドウを追加 */
+    width: 300px;                /* 幅を300pxに固定 */
+    top: 120px;                  /* ヘッダーとの間隔を調整 */
+    left: 20px;                  /* 左から20pxの位置に配置 */
+    margin: 0px;
+    position: absolute;
 }
-.search-form input, .search-form select, .search-form button {
-    margin: 5px 0;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
+
+/* 検索フォーム内の見出しのスタイル */
+.search-form h3 {    
+    margin-top: 5px;       /* 上部余白を5pxに設定 */
+    margin-bottom: 5px;    /* 下部余白を5pxに設定 */
+    font-size: 18px;     /* フォントサイズを18pxに設定 */
 }
+
+/* 検索フォーム内のinput、select、button要素のスタイルを設定 */
+.search-form input,
+.search-form select,
+.search-form button {
+    margin: 5px 0;       /* 上下に5pxの余白を設定 */
+    padding: 8px;        /* 内側に8pxの余白を設定 */
+    width: 100%;         /* 幅を100%に設定して親要素に合わせる */
+    box-sizing: border-box; /* paddingを含めて幅を計算 */
+}
+
+
+/* 投稿コンテナのスタイル */
+.posts-container {
+    flex: 1;                     /* 残りのスペースを全て使用 */
+    margin-left: 340px;          /* 検索フォームの幅 + 余白の分だけ左に余白を追加 */
+}
+
+/* 各投稿のスタイル */
 .post {
-    background-color: #fff;
-    margin: 10px 0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;               /* フレックスボックスのレイアウトを使用 */
+    border: 1px solid #ddd;      /* 薄い灰色の枠線を追加 */
+    padding: 15px;               /* 内側の余白を15pxに設定 */
+    border-radius: 8px;          /* 角を8pxの半径で丸める */
+    background-color: #fff;      /* 背景色を白に設定 */
+    width: 600px; /* 適切な幅を設定 */
+    margin-bottom: 20px; /* 下部の余白を追加 */
 }
+
+
+
+/* 画像のスタイル */
 .post img {
-    margin-bottom: 10px;
+    max-width: 100%; /* 画像が親要素にフィットするように */
+    border-radius: 8px; /* 画像の角を丸める */
+    margin-right: 15px; /* 画像とテキストの間隔を設定 */
 }
-.post div {
-    margin: 5px 0;
+/* 投稿の内容部分のスタイル */
+.post-content {
+    flex: 1;                     /* 残りのスペースを全て埋める */
 }
-.post .actions {
+
+/* アクションボタンのコンテナのスタイル */
+.actions {
+    display: flex;               /* フレックスボックスのレイアウトを使用 */
+    align-items: center;         /* 中央に揃える */
+    margin-top: 10px;            /* 上側に10pxの余白を追加 */
+    gap: 10px;                   /* ボタン間に10pxの間隔をあける */
+
+}
+
+
+
+/* 「いいね」アイコンが選択されている場合のスタイル */
+.fas.fa-heart {
+    color: red;                  /* 赤色で表示 */
+}
+
+/* 「いいね」アイコンが選択されていない場合のスタイル */
+.far.fa-heart {
+    color: gray;                 /* 灰色で表示 */
+}
+
+/* ページネーションを中央に配置するためのスタイル */
+.pagination {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-.post .actions a, .post .actions button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    width: auto; /* Make sure buttons have auto width */
-}
-.post .actions a {
-    background-color: #c0cddc;
+    justify-content: center;
+    margin: 5px 0; /* ページネーション周囲の余白 */
 }
 
-
-.like-button i {
-    color: #dc3545;
+.pagination .page_entries_info {
+    text-align: center;
+    margin-bottom: 50px;
 }
+
