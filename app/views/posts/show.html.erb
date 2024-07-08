@@ -7,7 +7,6 @@
 </head>
 
 <body>
-<h1>map_app</h1>
 <h1>投稿詳細</h1>
 
 <div class="content-container">
@@ -22,17 +21,17 @@
             <p><%= @post.live %></p>
             <strong>休憩場所名</strong>
             <p><%= @post.name %></p>
-            <strong>休憩場所</strong>
-            <p><%= @post.adress %></p>
             <strong>会場からの時間</strong>
             <p><%= @post.times %></p>
             <strong>料金目安</strong>
             <p><%= @post.fees %></p>
-            <strong>休憩可能目安時間</strong>
+            <strong>滞在時間目安</strong>
             <p><%= @post.staytime %></p>
-            <strong>屋根</strong>
+            <strong>屋根はあるか</strong>
             <p><%= @post.roof %></p>
-            <p><%= @post.created_at %>
+            <strong>コメント:</strong> 
+            <p><%= @post.comment2 %></p>
+            
 
             <% if user_signed_in? %>
                 <% if current_user.already_liked?(@post) %>
@@ -46,7 +45,7 @@
                 <% end %>
             <% else %>
                 <i class="far fa-heart"></i><%= @post.likes.count %>
-            <% end %></p>
+            <% end %>
         </div>
     </div>
 
@@ -79,6 +78,7 @@
             <% end %>
         <% end %>
     <% end %>
+    <%= link_to "投稿一覧に戻る", posts_path %>
 </div>
 
 

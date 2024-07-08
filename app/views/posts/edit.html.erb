@@ -1,24 +1,200 @@
-<%= form_for @post do |f| %>
-    <%= f.label :live %>
-    <%= f.text_field :live, :size => 140 %> 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>投稿編集ページ</title>
+    <%= stylesheet_link_tag 'new', media: 'all' %>
+</head>
+<body>
+    <h1>投稿編集ページ</h1>
+    <div class="container">
+        <div class="form-container">
+            <%= form_for @post, url: post_path(@post), method: :patch, html: { onsubmit: "return validateForm()" } do |f| %>
 
-    <%= f.label :name %>
-    <%= f.text_field :name, :size => 140 %> 
+            <h3>ライブ会場名 <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.text_field :live, :size => 30, required: true, value: @post.live %>
+            </div>
 
-    <%= f.label :adress %>
-    <%= f.text_field :adress, :size => 140 %> 
+            <h3>休憩場所名 <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.text_field :name, :size => 30, required: true, value: @post.name %>
+            </div>
 
-    <%= f.label :time %>
-    <%= f.text_field :time, :size => 140 %> 
+            <h3>滞在時間目安 <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.select :staytime, 
+                [["~30分", "~30分"], 
+                ["~1時間", "~1時間"], 
+                ["1時間~", "1時間~"], ], 
+                { include_blank: "選択して下さい", required: true }, value: @post.staytime %>
+            </div>
 
-    <%= f.label :fee %>
-    <%= f.text_field :fee, :size => 140 %> 
+            <h3>屋根はあるか <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.select :roof, 
+                [["あり", "あり"], 
+                ["なし", "なし"], ], 
+                { include_blank: "選択して下さい", required: true }, value: @post.roof %>
+            </div>
 
-    <%= f.label :staytime %>
-    <%= f.text_field :staytime, :size => 140 %> 
+            <h3>会場までの時間 <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.select :times,
+                [["~5分", "~5分"], 
+                ["~10分", "~10分"], 
+                ["10分~", "10分~"], ], 
+                { include_blank: "選択して下さい", required: true }, value: @post.times %>
+            </div>
 
-    <%= f.label :roof %>
-    <%= f.text_field :roof, :size => 140 %> 
+            <h3>料金目安 <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.select :fees,
+                [["無料", "無料"], 
+                ["~1000円", "~1000円"], 
+                ["1000円~", "1000円~"], ], 
+                { include_blank: "選択して下さい", required: true }, value: @post.fees %>
+            </div>
 
-    <%= f.submit "編集する" %>
-<% end %>
+            <h3>自由コメント</h3>
+            <div class="field">
+                <%= f.text_area :comment2, value: @post.comment2 %>
+            </div>
+
+            <h3>休憩場所の写真を載せてね <span class="required">*</span></h3>
+            <div class="field">
+                <%= f.file_field :image, required: true %>
+            </div>
+
+            <h3>隣の地図で休憩場所を指定してね <span class="required">*</span></h3>
+            地図を指定すると自動的に座標が入力されます
+            <div class="actions">
+                <%= f.label :lat, "緯度" %><span class="required">*</span>
+                <%= f.text_field :lat, :value => @post.lat, id: :lat, required: true %>
+                <%= f.label :lng, "経度" %><span class="required">*</span>
+                <%= f.text_field :lng, :value => @post.lng, id: :lng, required: true %>
+            </div>
+
+            <%= f.submit "投稿を編集する" %>
+            <% end %>
+
+            <%= link_to "投稿一覧に戻る", posts_path %>
+        </div>
+
+        <div class="map-container">
+            <h2>Map</h2>
+
+            <input id="address" type="textbox">
+            <input type="button" value="検索" onclick="codeAddress()">
+            <p>マーカーをドラック＆ドロップで位置の調整ができます。</p>
+            <div id='map'></div>
+        </div>
+    </div>
+
+    <script>
+        //初期マップの設定
+        let map
+        let marker
+        function initMap(){
+            geocoder = new google.maps.Geocoder()
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center:  {lat: 35.6803997, lng:139.7690174},  //東京
+                zoom: 15,
+            });
+
+            // マーカーを既存の位置に配置
+            let initialLat = parseFloat(document.getElementById('lat').value);
+            let initialLng = parseFloat(document.getElementById('lng').value);
+            let initialPosition = { lat: initialLat, lng: initialLng };
+            
+            marker = new google.maps.Marker({
+                map: map,
+                position: initialPosition,
+                draggable: true
+            });
+
+            map.setCenter(initialPosition);
+
+            // マーカーのドロップ（ドラッグ終了）時のイベント
+            google.maps.event.addListener( marker, 'dragend', function(ev){
+                document.getElementById('lat').value = ev.latLng.lat();
+                document.getElementById('lng').value = ev.latLng.lng();
+            });
+        }
+
+        //検索後のマップ作成
+        let geocoder
+        let aft
+        function codeAddress(){
+            let inputAddress = document.getElementById('address').value;
+            geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+                if (status == 'OK') {
+                    if (aft == true){
+                        marker.setMap(null);
+                    }
+
+                    map.setCenter(results[0].geometry.location);
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        draggable: true
+                    });
+
+                    aft = true
+
+                    document.getElementById('lat').value = results[0].geometry.location.lat();
+                    document.getElementById('lng').value = results[0].geometry.location.lng();
+
+                    google.maps.event.addListener( marker, 'dragend', function(ev){
+                        document.getElementById('lat').value = ev.latLng.lat();
+                        document.getElementById('lng').value = ev.latLng.lng();
+                    });
+                } else {
+                    alert('該当する結果がありませんでした：' + status);
+                }
+            });
+        }
+
+        // フォームバリデーション
+        function validateForm() {
+            let requiredFields = document.querySelectorAll("[required]");
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    alert("すべての必須フィールドを記入してください。");
+                    field.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (event) => {
+                const lat = document.getElementById('lat').value;
+                const lng = document.getElementById('lng').value;
+
+                const staytime = document.querySelector('select[name="post[staytime]"]').value;
+                const roof = document.querySelector('select[name="post[roof]"]').value;
+                const times = document.querySelector('select[name="post[times]"]').value;
+                const fees = document.querySelector('select[name="post[fees]"]').value;
+
+                if (!staytime || staytime === "選択して下さい" ||
+                    !roof || roof === "選択して下さい" ||
+                    !times || times === "選択して下さい" ||
+                    !fees || fees === "選択して下さい") {
+                    alert("すべての必須項目を選択してください。");
+                    event.preventDefault();
+                }
+                if (!lat || lat === "緯度" || !lng || lng === "経度") {
+                    alert("緯度と経度を指定してください。");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1p1vOg2wCDiHugUcLvTkjxj_HbBAitLo&callback=initMap" async defer></script>
+</body>
+</html>

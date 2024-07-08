@@ -1,18 +1,24 @@
 /* 全体レイアウト */
 body {
+    
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
 }
 
+h1 {
+    margin-top: 60px; 
+}
+
+
+
 /* コンテンツコンテナ */
 .content-container {
     display: flex;
     justify-content: space-between; /* 左右に要素を配置 */
-    margin: 20px;
+    margin: 30px;
     height: 250pt;
-    
 }
 
 /* 各投稿のスタイル */
@@ -53,9 +59,11 @@ body {
 
 /* コメント */
 .comment-wrapper {
+    
     margin-top: 40px;
-    float: left;  /* 左側に寄せる */
-    width: 50%;   /* 必要に応じて幅を設定 */
+    width: 100%;   /* 幅を100%に設定 */
+    max-width: 600px; /* 必要に応じて最大幅を設定 */
+    box-sizing: border-box; /* パディングやボーダーのサイズを含める */
 }
 
 .comment-wrapper p {
@@ -76,6 +84,8 @@ body {
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 10px;
+    box-sizing: border-box; /* パディングやボーダーのサイズを含める */
+    resize: vertical; /* テキストエリアのサイズを縦方向にのみ変更可能にする */
 }
 
 .comment-wrapper button {
@@ -91,12 +101,12 @@ body {
     background-color: #0056b3;
 }
 
+
 /* マップ */
 #map {
     height: 300pt; /* 高さを300ptに設定 */
     width: 550px;  
-    margin-top: 20px;
-    border-radius: 8px;
+    border-radius: 8px;/* 角を丸くする */
 }
 
 /* ユーザーリスト */

@@ -18,10 +18,13 @@
                 <%= text_field_tag :search, params[:search], placeholder: "ライブ会場を検索" %>
                 かかる料金
                 <%= select_tag :searchfee, options_for_select([["", ""], ["無料", "無料"], ["~1000円", "~1000円"], ["1000円~", "1000円~"]], params[:searchfee]) %>
-                屋内か屋外か
-                <%= select_tag :searchroof, options_for_select([["", ""], ["屋内", "あり"], ["屋外", "なし"]], params[:searchroof]) %>
-                滞在可能時間
+                滞在時間目安
                 <%= select_tag :searchstaytime, options_for_select([["", ""], ["~30分", "~30分"], ["~1時間", "~1時間"], ["1時間~", "1時間~"]], params[:searchstaytime]) %>
+                屋根の有無
+                <%= select_tag :searchroof, options_for_select([["", ""], ["あり", "あり"], ["なし", "なし"]], params[:searchroof]) %>
+                会場までの時間
+                <%= select_tag :times, options_for_select([["", ""], ["~5分", "~5分"], ["~10分", "~10分"], ["10分~", "10分~"]], params[:times]) %>
+
                 <%= submit_tag 'ライブ会場を検索する' %>
             </div>
         <% end %>
@@ -35,13 +38,12 @@
                     <% end %>
                     <div class="post-content">
                         <div><strong>ライブ会場:</strong> <%= t.live %></div>
-                        <div><strong>名前:</strong> <%= t.name %></div>
+                        <div><strong>休憩場所名:</strong> <%= t.name %></div>
                         
                         <div><strong>料金:</strong> <%= t.fees %></div>
-                        <div><strong>滞在時間:</strong> <%= t.staytime %></div>
-                        <div><strong>屋根:</strong> <%= t.roof %></div>
-                        <div><strong>時間:</strong> <%= t.times %></div>
-                        <div><strong>ユーザー:</strong> <%= link_to t.user.name, user_path(t.user.id) %> (<%= t.user.email %>)</div>
+                        <div><strong>滞在時間目安:</strong> <%= t.staytime %></div>
+                        <div><strong>屋根の有無:</strong> <%= t.roof %></div>
+                        <div><strong>会場までの時間:</strong> <%= t.times %></div>
                         <div><strong>コメント:</strong> <%= t.comment2 %></div>
                         
                         <div class="actions">
@@ -59,8 +61,11 @@
                                 <i class="far fa-heart"></i><%= t.likes.count %>
                             <% end %>
                             <%= link_to "詳細へ", post_path(t.id), class: "detail-button" %>
-                            <%= link_to "編集する", edit_post_path(t.id), class: "edit-button" %>
-                            <%= link_to '削除する', delete_post_path(t.id), data: { confirm: 'Are you sure?' } %>
+
+                            <% if user_signed_in? && current_user.id == t.user_id %>
+                                <%= link_to "編集する", edit_post_path(t.id), class: "edit-button" %>
+                                <%= link_to '削除する', delete_post_path(t.id), data: { confirm: 'Are you sure?' } %>
+                            <% end %> 
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,100 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.field {
+    margin-bottom: 5px;  /* Reduce margin between fields */
+}
+
+.field label {
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+    vertical-align: middle;  /* Align labels vertically in the middle */
+}
+
+.field input[type="text"],
+.field input[type="textbox"],
+.field textarea,
+.field select {
+    width: calc(100% - 130px);
+    padding: 5px;
+    margin-left: 10px;
+    box-sizing: border-box;
+    vertical-align: middle;  /* Align inputs vertically in the middle */
+}
+
+.field textarea {
+    height: 60px;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions label {
+    display: inline-block;
+    width: 50px;  /* Adjust width for latitude and longitude labels */
+    font-weight: bold;
+    vertical-align: middle;  /* Align labels vertically in the middle */
+}
+
+.actions input[type="text"] {
+    width: calc(100% - 70px);  /* Adjust width for latitude and longitude inputs */
+    padding: 5px;
+    margin-left: 10px;
+    box-sizing: border-box;
+    vertical-align: middle;  /* Align inputs vertically in the middle */
+}
+
+button, input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Required field asterisk */
+.required {
+    color: red;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+/* CSS to place the map next to the form */
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.form-container {
+    flex: 1;
+    margin-right: 20px;
+    max-width: 600px;
+}
+
+.map-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin-top: 10px;
+}
